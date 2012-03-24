@@ -40,7 +40,7 @@ class Command(LabelCommand):
                     help='Do NOT generate an excerpt if not present.'),
         make_option('--author', dest='author', default='',
                     help='All imported entries belong to specified author'),
-        make_option('--wxr_version', dest='wxr_version', default='1.0',
+        make_option('--wxr_version', dest='wxr_version', default='1.1',
                     help='Wordpress XML export version'),
         )
 
@@ -276,7 +276,7 @@ class Command(LabelCommand):
                 entry = self.import_entry(title, content, item_node)
                 self.write_out(self.style.ITEM('OK\n'))
                 self.import_comments(entry, item_node.findall(
-                    '{%s}comment/' % WP_NS))
+                    '{%s}comment' % WP_NS))
             else:
                 self.write_out('> %s... ' % title, 2)
                 self.write_out(self.style.NOTICE('SKIPPED (not a post)\n'), 2)
@@ -291,11 +291,11 @@ class Command(LabelCommand):
                 '{%s}comment_type' % WP_NS).text == TRACKBACK
 
             title = 'Comment #%s' % (comment_node.find(
-                '{%s}comment_id/' % WP_NS).text)
+                '{%s}comment_id' % WP_NS).text)
             self.write_out(' > %s... ' % title)
 
             content = comment_node.find(
-                '{%s}comment_content/' % WP_NS).text
+                '{%s}comment_content' % WP_NS).text
             if not content:
                 self.write_out(self.style.NOTICE('SKIPPED (unfilled)\n'))
                 return
@@ -317,15 +317,15 @@ class Command(LabelCommand):
                 'content_object': entry,
                 'site': self.SITE,
                 'user_name': comment_node.find(
-                    '{%s}comment_author/' % WP_NS).text[:50],
+                    '{%s}comment_author' % WP_NS).text[:50],
                 'user_email': comment_node.find(
-                    '{%s}comment_author_email/' % WP_NS).text or '',
+                    '{%s}comment_author_email' % WP_NS).text or '',
                 'user_url': comment_node.find(
-                    '{%s}comment_author_url/' % WP_NS).text or '',
+                    '{%s}comment_author_url' % WP_NS).text or '',
                 'comment': content,
                 'submit_date': submit_date,
                 'ip_address': comment_node.find(
-                    '{%s}comment_author_IP/' % WP_NS).text or '',
+                    '{%s}comment_author_IP' % WP_NS).text or '',
                 'is_public': is_public,
                 'is_removed': is_removed, }
             comment = comments.get_model()(**comment_dict)
